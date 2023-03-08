@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOSTS")]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -24,9 +26,6 @@ SECRET_KEY = '9f0h)gozf$g%6igo8&767w1xro0adm+)msxe)!eic$!fhvynb8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['172.22.201.43','python.alfonso.gonzalonazareno.org']
-
 
 # Application definition
 
@@ -76,11 +75,14 @@ WSGI_APPLICATION = 'django_tutorial.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get("DB_DJANGO"),
+        'USER': os.environ.get('USER_DJANGO'),
+        'PASSWORD': os.environ.get("PASS_DJANGO"),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -118,8 +120,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = '/static/'
 
-DEFAULT_AUTO_FIELD='django.db.models.AutoField' 
+CSRF_TRUSTED_ORIGINS = ['http://*.alfonsora6.com','http://*.127.0.0.1','https://*.alfonsora6.com','https://*.127.0.0.1']
 
-STATIC_ROOT = "/var/www/html/django_tutorial/static/"
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
